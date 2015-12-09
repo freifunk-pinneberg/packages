@@ -1,0 +1,45 @@
+#
+
+include $(TOPDIR)/rules.mk
+
+PKG_NAME:=liboath
+PKG_VERSION:=1.12.6
+PKG_RELEASE:=1
+
+PKG_SOURCE:=oath-toolkit-$(PKG_VERSION).tar.gz
+PKG_SOURCE_URL:=http://download.savannah.gnu.org/releases/oath-toolkit/
+PKG_MD5SUM:=7c8c4231aecfc5d74467b2a9e6bf054c
+PKG_BUILD_DIR:=$(BUILD_DIR)/oath-toolkit-$(PKG_VERSION)
+
+PKG_INSTALL:=1
+
+include $(INCLUDE_DIR)/package.mk
+
+define Package/liboath
+  SECTION:=libs
+  CATEGORY:=Libraries
+  TITLE:=OATH libraries
+  URL:=http://www.nongnu.org/oath-toolkit/
+endef
+
+define Package/liboath/description
+ This package contains a library for oath stuff
+endef
+
+define Build/InstallDev
+	$(INSTALL_DIR) $(1)/usr/include
+	$(CP) $(PKG_INSTALL_DIR)/usr/include/liboath/oath.h $(1)/usr/include/
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/liboath.{a,so*} $(1)/usr/lib/
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(CP) $(PKG_INSTALL_DIR)/usr/bin/oathtool $(1)/usr/bin/
+endef
+
+define Package/liboath/install
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/liboath.so.* $(1)/usr/lib/
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(CP) $(PKG_INSTALL_DIR)/usr/bin/oathtool $(1)/usr/bin/
+endef
+
+$(eval $(call BuildPackage,liboath))
